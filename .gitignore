@@ -8,3 +8,5 @@ datasets/
 *.sh
 saved_models/
 *.log
+__pycache__/
+

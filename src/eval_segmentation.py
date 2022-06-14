@@ -85,9 +85,17 @@ def my_app(cfg: DictConfig) -> None:
             cfg=model.cfg,
         )
 
-        test_loader = DataLoader(test_dataset, cfg.batch_size * 2,
+        if cfg.experiment_name == 'quicktest':
+            test_loader = DataLoader(test_dataset, cfg.batch_size,
                                  shuffle=False, num_workers=cfg.num_workers,
                                  pin_memory=True, collate_fn=flexible_collate)
+
+        else:
+            test_loader = DataLoader(test_dataset, cfg.batch_size * 2,
+                                 shuffle=False, num_workers=cfg.num_workers,
+                                 pin_memory=True, collate_fn=flexible_collate)
+        
+        
 
         model.eval().cuda()
 
@@ -106,7 +114,7 @@ def my_app(cfg: DictConfig) -> None:
             # all_good_images = [61, 60, 49, 44, 13, 70] #Failure cases
             all_good_images = [19, 54, 67, 66, 65, 75, 77, 76, 124]  # Main figure
             if cfg.experiment_name == 'quicktest':
-                all_good_images = [0] # for quick test
+                all_good_images = [0, 1] # for quick test
         elif model.cfg.dataset_name == "cityscapes":
             # all_good_images = range(80)
             # all_good_images = [ 5, 20, 56]
@@ -115,6 +123,11 @@ def my_app(cfg: DictConfig) -> None:
             raise ValueError("Unknown Dataset {}".format(model.cfg.dataset_name))
         batch_nums = torch.tensor([n // (cfg.batch_size * 2) for n in all_good_images])
         batch_offsets = torch.tensor([n % (cfg.batch_size * 2) for n in all_good_images])
+
+        if cfg.experiment_name == 'quicktest':
+            # batch_nums = torch.tensor([n // (cfg.batch_size * 2) for n in all_good_images])
+            batch_offsets = torch.tensor([n % (cfg.batch_size * 2) for n in all_good_images])
+            batch_nums = torch.tensor([n % (cfg.batch_size * 2) for n in all_good_images])
 
         saved_data = defaultdict(list)
         # with Pool(cfg.num_workers + 5) as pool:
@@ -146,15 +159,16 @@ def my_app(cfg: DictConfig) -> None:
                     picie_preds = picie_cluster_metrics.map_clusters(
                         picie_cluster_probe(par_picie(img), None)[1].argmax(1).cpu())
 
-                if i in batch_nums:
-                    matching_offsets = batch_offsets[torch.where(batch_nums == i)]
-                    for offset in matching_offsets:
-                        saved_data["linear_preds"].append(linear_preds.cpu()[offset].unsqueeze(0))
-                        saved_data["cluster_preds"].append(cluster_preds.cpu()[offset].unsqueeze(0))
-                        saved_data["label"].append(label.cpu()[offset].unsqueeze(0))
-                        saved_data["img"].append(img.cpu()[offset].unsqueeze(0))
-                        if run_picie:
-                            saved_data["picie_preds"].append(picie_preds.cpu()[offset].unsqueeze(0))
+                # if i in batch_nums:
+                #     matching_offsets = batch_offsets[torch.where(batch_nums == i)]
+                #     for offset in matching_offsets:
+                offset = 0
+                saved_data["linear_preds"].append(linear_preds.cpu()[offset].unsqueeze(0))
+                saved_data["cluster_preds"].append(cluster_preds.cpu()[offset].unsqueeze(0))
+                saved_data["label"].append(label.cpu()[offset].unsqueeze(0))
+                saved_data["img"].append(img.cpu()[offset].unsqueeze(0))
+                if run_picie:
+                    saved_data["picie_preds"].append(picie_preds.cpu()[offset].unsqueeze(0))
         saved_data = {k: torch.cat(v, dim=0) for k, v in saved_data.items()}
 
         tb_metrics = {
@@ -185,40 +199,40 @@ def my_app(cfg: DictConfig) -> None:
                 Image.fromarray(plot_img).save(join(join(result_dir, "img", str(img_num) + ".jpg")))
                 Image.fromarray(plot_label).save(join(join(result_dir, "label", str(img_num) + ".png")))
 
-                if cfg.experiment_name == 'quicktest':
-                    ax[0].imshow(plot_img)
-                    ax[1].imshow(plot_label)
-                else:
-                    ax[0, i].imshow(plot_img)
-                    ax[1, i].imshow(plot_label)
+                # if cfg.experiment_name == 'quicktest':
+                #     ax[0].imshow(plot_img)
+                #     ax[1].imshow(plot_label)
+                # else:
+                ax[0, i].imshow(plot_img)
+                ax[1, i].imshow(plot_label)
                 if cfg.run_prediction:
                     plot_cluster = (model.label_cmap[
                         model.test_cluster_metrics.map_clusters(
                             saved_data["cluster_preds"][img_num])]) \
                         .astype(np.uint8)
                     Image.fromarray(plot_cluster).save(join(join(result_dir, "cluster", str(img_num) + ".png")))
-                    if cfg.experiment_name == 'quicktest':
-                        ax[2].imshow(plot_cluster)
-                    else:
-                        ax[2, i].imshow(plot_cluster)
+                    # if cfg.experiment_name == 'quicktest':
+                    #     ax[2].imshow(plot_cluster)
+                    # else:
+                    ax[2, i].imshow(plot_cluster)
                 if run_picie:
                     picie_img = model.label_cmap[saved_data["picie_preds"][img_num]].astype(np.uint8)
                     ax[3, i].imshow(picie_img)
                     Image.fromarray(picie_img).save(join(join(result_dir, "picie", str(img_num) + ".png")))
 
-            if cfg.experiment_name == 'quicktest':
-                ax[0].set_ylabel("Image", fontsize=26)
-                ax[1].set_ylabel("Label", fontsize=26)
-            else:
-                ax[0, 0].set_ylabel("Image", fontsize=26)
-                ax[1, 0].set_ylabel("Label", fontsize=26)
+            # if cfg.experiment_name == 'quicktest':
+            #     ax[0].set_ylabel("Image", fontsize=26)
+            #     ax[1].set_ylabel("Label", fontsize=26)
+            # else:
+            ax[0, 0].set_ylabel("Image", fontsize=26)
+            ax[1, 0].set_ylabel("Label", fontsize=26)
                 
             
             if cfg.run_prediction:
-                if cfg.experiment_name == 'quicktest':
-                    ax[2].set_ylabel("STEGO\n(Ours)", fontsize=26)
-                else:
-                    ax[2, 0].set_ylabel("STEGO\n(Ours)", fontsize=26)
+                # if cfg.experiment_name == 'quicktest':
+                #     ax[2].set_ylabel("STEGO\n(Ours)", fontsize=26)
+                # else:
+                ax[2, 0].set_ylabel("STEGO\n(Ours)", fontsize=26)
             if run_picie:
                 ax[3, 0].set_ylabel("PiCIE\n(Baseline)", fontsize=26)
 

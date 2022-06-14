@@ -3,3 +3,7 @@ data/*
 src/.env
 results/predictions/*
 src/iarpa
+datasets/
+.vscode/
+*.sh
+saved_models/

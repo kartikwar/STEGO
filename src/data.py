@@ -248,11 +248,12 @@ class Coco(Dataset):
         elif self.subset == 7:  # IIC Fine
             self.image_list = "Coco164kFull_Stuff_Coarse_7.txt"
 
-        assert self.split in ["train", "val", "train+val"]
+        assert self.split in ["train", "val", "train+val", "test"]
         split_dirs = {
             "train": ["train2017"],
             "val": ["val2017"],
-            "train+val": ["train2017", "val2017"]
+            "train+val": ["train2017", "val2017"],
+            "test": ["test2017"]
         }
 
         self.image_files = []

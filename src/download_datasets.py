@@ -13,6 +13,7 @@ def my_app(cfg: DictConfig) -> None:
         "cityscapes",
         "cocostuff",
         "potsdamraw"]
+    dataset_names = ["cocostuff"]
     url_base = "https://marhamilresearch4.blob.core.windows.net/stego-public/pytorch_data/"
 
     os.makedirs(pytorch_data_dir, exist_ok=True)

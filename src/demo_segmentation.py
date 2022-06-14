@@ -33,7 +33,7 @@ class UnlabeledImageFolder(Dataset):
 
 @hydra.main(config_path="configs", config_name="demo_config.yml")
 def my_app(cfg: DictConfig) -> None:
-    result_dir = "../results/predictions/{}".format(cfg.experiment_name)
+    result_dir = "/home/ubuntu/kartik/STEGO/results/predictions/{}".format(cfg.experiment_name)
     os.makedirs(result_dir, exist_ok=True)
     os.makedirs(join(result_dir, "cluster"), exist_ok=True)
     os.makedirs(join(result_dir, "linear"), exist_ok=True)

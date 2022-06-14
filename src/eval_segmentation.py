@@ -243,6 +243,7 @@ def my_app(cfg: DictConfig) -> None:
 
         plot_cm(model.test_cluster_metrics.histogram, model.label_cmap, model.cfg)
         plt.show()
+        plt.savefig('eval_segm.png')
         plt.clf()
 
 

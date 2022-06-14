@@ -1,0 +1,6 @@
+1.) conda create -n stego-env python=3.8.13
+2.) conda activate stego-env
+3.) conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.1 -c pytorch
+4.) pip install -r requirements.txt
+5.) pip install cython
+6.) pip install git+https://github.com/lucasb-eyer/pydensecrf.git

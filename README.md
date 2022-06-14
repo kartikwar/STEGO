@@ -50,6 +50,8 @@ conda env create -f environment.yml
 conda activate stego
 ```
 
+In case you face issues please check [env setup page](env_setup.txt)
+
 ### Download Pre-Trained Models
 
 ```shell script

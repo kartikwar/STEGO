@@ -24,7 +24,7 @@ def get_feats(model, loader):
 @hydra.main(config_path="configs", config_name="train_config.yml")
 def my_app(cfg: DictConfig) -> None:
     print(OmegaConf.to_yaml(cfg))
-    pytorch_data_dir = cfg.pytorch_data_dir
+    pytorch_data_dir = join(cfg.output_root, cfg.pytorch_data_dir)
     data_dir = join(cfg.output_root, "data")
     log_dir = join(cfg.output_root, "logs")
     os.makedirs(data_dir, exist_ok=True)
@@ -79,7 +79,8 @@ def my_app(cfg: DictConfig) -> None:
                         cfg=cfg,
                     )
 
-                    loader = DataLoader(dataset, 256, shuffle=False, num_workers=cfg.num_workers, pin_memory=False)
+                    # loader = DataLoader(dataset, 256, shuffle=False, num_workers=cfg.num_workers, pin_memory=False)
+                    loader = DataLoader(dataset, 128, shuffle=False, num_workers=cfg.num_workers, pin_memory=False)
 
                     with torch.no_grad():
                         normed_feats = get_feats(par_model, loader)

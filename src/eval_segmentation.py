@@ -191,7 +191,7 @@ def my_app(cfg: DictConfig) -> None:
         if cfg.dark_mode:
             plt.style.use('dark_background')
 
-        for good_images in batch_list(range(len(all_good_images)), 10):
+        for good_images in batch_list(range(len(saved_data['img'])), 10):
             fig, ax = plt.subplots(n_rows, len(good_images), figsize=(len(good_images) * 3, n_rows * 3))
             for i, img_num in enumerate(good_images):
                 plot_img = (prep_for_plot(saved_data["img"][img_num]) * 255).numpy().astype(np.uint8)

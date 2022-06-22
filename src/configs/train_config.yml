@@ -1,5 +1,5 @@
-output_root: '../'
-pytorch_data_dir: '/datadrive/pytorch-data/'
+output_root: '/home/ubuntu/kartik/STEGO/'
+pytorch_data_dir: 'datasets'
 experiment_name: "exp1"
 log_dir: "cocostuff27"
 azureml_logging: True
@@ -7,18 +7,18 @@ submitting_to_aml: False
 
 # Loader params
 num_workers: 24
-max_steps: 5000
+max_steps: 5
 batch_size: 16
 
 num_neighbors: 7
-dataset_name: "cocostuff27"
+dataset_name: "directory"
 
 # Used if dataset_name is "directory"
-dir_dataset_name: ~
+dir_dataset_name: "customer-dataset"
 dir_dataset_n_classes: 5
 
 has_labels: False
-crop_type: "five"
+crop_type: "None"
 crop_ratio: .5
 res: 224
 loader_crop_type: "center"

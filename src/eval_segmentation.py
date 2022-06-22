@@ -120,7 +120,9 @@ def my_app(cfg: DictConfig) -> None:
             # all_good_images = [ 5, 20, 56]
             all_good_images = [11, 32, 43, 52]
         else:
-            raise ValueError("Unknown Dataset {}".format(model.cfg.dataset_name))
+            if cfg.experiment_name == 'quicktest':
+                all_good_images = [0, 1]
+            # raise ValueError("Unknown Dataset {}".format(model.cfg.dataset_name))
         batch_nums = torch.tensor([n // (cfg.batch_size * 2) for n in all_good_images])
         batch_offsets = torch.tensor([n % (cfg.batch_size * 2) for n in all_good_images])
 

@@ -11,7 +11,8 @@ dark_mode: True
 use_ddp: False
 
 model_paths:
-  - "/home/ubuntu/kartik/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
+  # - "/home/ubuntu/kartik/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
+  - "/home/ubuntu/kartik/STEGO/checkpoints/cocostuff27/directory_exp1_date_Jun22_11-03-30/epoch=1-step=6.ckpt"
   #- "../saved_models/cityscapes_vit_base_1.ckpt"
   #- "../saved_models/potsdam_test.ckpt"
 

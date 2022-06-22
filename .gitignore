@@ -9,4 +9,5 @@ datasets/
 saved_models/
 *.log
 __pycache__/
-
+checkpoints/
+logs/

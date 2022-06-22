@@ -37,15 +37,16 @@ def my_app(cfg: DictConfig) -> None:
     print(cfg.output_root)
 
     image_sets = ["val", "train"]
-    dataset_names = ["cocostuff27", "cityscapes", "potsdam"]
-    crop_types = ["five", None]
+    # dataset_names = ["cocostuff27", "cityscapes", "potsdam"]
+    # crop_types = ["five", None]
 
     # Uncomment these lines to run on custom datasets
-    #dataset_names = ["directory"]
-    #crop_types = [None]
+    dataset_names = ["directory"]
+    crop_types = [None]
 
     res = 224
     n_batches = 16
+    # n_batches = 1
 
     if cfg.arch == "dino":
         from modules import DinoFeaturizer, LambdaLayer
@@ -89,7 +90,8 @@ def my_app(cfg: DictConfig) -> None:
                             torch.cuda.empty_cache()
                             batch_feats = normed_feats[i:i + step, :]
                             pairwise_sims = torch.einsum("nf,mf->nm", batch_feats, normed_feats)
-                            all_nns.append(torch.topk(pairwise_sims, 30)[1])
+                            # all_nns.append(torch.topk(pairwise_sims, 30)[1])
+                            all_nns.append(torch.topk(pairwise_sims, 16)[1])
                             del pairwise_sims
                         nearest_neighbors = torch.cat(all_nns, dim=0)
 

@@ -90,8 +90,8 @@ def my_app(cfg: DictConfig) -> None:
                             torch.cuda.empty_cache()
                             batch_feats = normed_feats[i:i + step, :]
                             pairwise_sims = torch.einsum("nf,mf->nm", batch_feats, normed_feats)
-                            # all_nns.append(torch.topk(pairwise_sims, 30)[1])
-                            all_nns.append(torch.topk(pairwise_sims, 16)[1])
+                            all_nns.append(torch.topk(pairwise_sims, 30)[1])
+                            # all_nns.append(torch.topk(pairwise_sims, 16)[1])
                             del pairwise_sims
                         nearest_neighbors = torch.cat(all_nns, dim=0)
 

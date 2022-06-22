@@ -486,7 +486,7 @@ def my_app(cfg: DictConfig) -> None:
         callbacks=[
             ModelCheckpoint(
                 dirpath=join(checkpoint_dir, name),
-                every_n_train_steps=2,
+                every_n_train_steps=400,
                 save_top_k=2,
                 monitor="test/cluster/mIoU",
                 mode="max",

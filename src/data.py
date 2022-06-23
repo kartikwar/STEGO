@@ -11,6 +11,7 @@ from torch.utils.data import Dataset
 from torchvision.datasets.cityscapes import Cityscapes
 from torchvision.transforms.functional import to_pil_image
 from tqdm import tqdm
+import imutils
 
 
 def bit_get(val, idx):
@@ -90,12 +91,57 @@ class DirectoryDataset(Dataset):
             assert len(self.img_files) == len(self.label_files)
         else:
             self.label_files = None
+            
+    def resize_maintaining_aspect_ratio(self, img):
+        """
+        Accept an image as argument and resize it to mentioned size.
+        Highest dimension will reduce to max_size maintaining the Aspect Ratio
+        of the image. If image highest dimension is lower than max_size than image
+        will be returned as such. And, if after scaling down img min dimension becomes less than
+        minsize than image is scaled to min dimension equal to minsize.
+        :param img: input image
+        :param max_size: maximum size of the any dimension
+        :return: returns resized image
+        """
+
+        max_size = 640
+        min_size = 150
+
+        img = np.asarray(img)
+
+        height, width = img.shape[:2]
+        
+        if max(height, width) == height and height > max_size:
+            # reducing height to max_size
+            img_new = imutils.resize(img, height=max_size)
+            if min(img_new.shape[:2]) < min_size:
+                img_new = imutils.resize(img, width=min_size)
+
+        elif max(height, width) == width and width > max_size:
+            # reducing width to max_size
+            img_new = imutils.resize(img, width=max_size)
+            if min(img_new.shape[:2]) < min_size:
+                img_new = imutils.resize(img, height=min_size)
+        else:
+            # print('old shape is ', img.shape[:2])
+            min_dim = min(height, width)
+
+            new_dim = max(min_dim, min_size)
+            # min_dim = min(img)
+            if min_dim == height:
+                img_new = imutils.resize(img, height=new_dim) 
+            else:
+                img_new = imutils.resize(img, width=new_dim)
+            # print('new shape is ', img_new.shape[:2])
+            # img_new = img.copy()  # return the input image untouched
+
+        return Image.fromarray(np.uint8(img_new))
 
     def __getitem__(self, index):
         image_fn = self.img_files[index]
         img = Image.open(join(self.img_dir, image_fn))
         img = img.convert('RGB')
-        img = img.resize((500, 500)) 
+        img = self.resize_maintaining_aspect_ratio(img) 
 
         if self.label_files is not None:
             label_fn = self.label_files[index]

@@ -12,7 +12,7 @@ use_ddp: False
 
 model_paths:
   # - "/home/ubuntu/kartik/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
-  - "/home/ubuntu/kartik/STEGO/checkpoints/cocostuff27/directory_exp1_date_Jun22_11-03-30/epoch=1-step=6.ckpt"
+  - "/home/ubuntu/kartik/datasets/checkpoints/cocostuff27/directory_exp1_date_Jun23_05-30-29/epoch=0-step=768.ckpt"
   #- "../saved_models/cityscapes_vit_base_1.ckpt"
   #- "../saved_models/potsdam_test.ckpt"
 

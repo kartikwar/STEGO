@@ -75,6 +75,11 @@ def my_app(cfg: DictConfig) -> None:
             picie_cluster_metrics = picie_state["cluster_metrics"]
 
         loader_crop = "center"
+        # if model.cfg.dataset_name != cocostuff27':
+        #     model.cfg.dataset_name = 'customer-dataset'
+        
+        model.cfg.dir_dataset_name = 'customer-dataset'
+        
         test_dataset = ContrastiveSegDataset(
             pytorch_data_dir=pytorch_data_dir,
             dataset_name=model.cfg.dataset_name,

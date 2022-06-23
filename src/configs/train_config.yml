@@ -1,9 +1,11 @@
 output_root: '/home/ubuntu/kartik/datasets/'
 pytorch_data_dir: 'background-knockout-dataset-v16'
+# output_root: '/home/ubuntu/kartik/STEGO/'
+# pytorch_data_dir: 'datasets'
 experiment_name: "exp1"
 log_dir: "cocostuff27"
 azureml_logging: True
-submitting_to_aml: False
+submitting_to_aml: True
 
 # Loader params
 num_workers: 24
@@ -18,6 +20,7 @@ dataset_name: "directory"
 
 # Used if dataset_name is "directory"
 dir_dataset_name: "good_annos"
+# dir_dataset_name: "customer-dataset"
 dir_dataset_n_classes: 5
 
 has_labels: False

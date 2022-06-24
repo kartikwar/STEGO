@@ -392,8 +392,8 @@ def my_app(cfg: DictConfig) -> None:
     log_dir = join(cfg.output_root, "logs")
     checkpoint_dir = join(cfg.output_root, "checkpoints")
 
-    prefix = "{}/{}_{}".format(cfg.log_dir, cfg.dataset_name, cfg.experiment_name)
-    name = '{}_date_{}'.format(prefix, datetime.now().strftime('%b%d_%H-%M-%S'))
+    prefix = "{}".format(cfg.log_dir)
+    name = prefix
     cfg.full_name = prefix
 
     os.makedirs(data_dir, exist_ok=True)
@@ -487,9 +487,7 @@ def my_app(cfg: DictConfig) -> None:
             ModelCheckpoint(
                 dirpath=join(checkpoint_dir, name),
                 every_n_train_steps=4,
-                save_top_k=2,
-                monitor="test/cluster/mIoU",
-                mode="max",
+                verbose=True
             )
         ],
         **gpu_args

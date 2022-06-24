@@ -62,10 +62,16 @@ def my_app(cfg: DictConfig) -> None:
     os.makedirs(join(result_dir, "label"), exist_ok=True)
     os.makedirs(join(result_dir, "cluster"), exist_ok=True)
     os.makedirs(join(result_dir, "picie"), exist_ok=True)
-
+    
+    
     for model_path in cfg.model_paths:
         model = LitUnsupervisedSegmenter.load_from_checkpoint(model_path)
         print(OmegaConf.to_yaml(model.cfg))
+
+        if cfg.pretrained_model:
+            model.cfg.dataset_name = 'directory'
+            model.cfg.dir_dataset_n_classes = 27
+
 
         run_picie = cfg.run_picie and model.cfg.dataset_name == "cocostuff27"
         if run_picie:

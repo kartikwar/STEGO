@@ -24,7 +24,7 @@ dir_dataset_name: "good_annos"
 dir_dataset_n_classes: 5
 
 has_labels: False
-crop_type: "None"
+crop_type: "five"
 crop_ratio: .5
 res: 224
 loader_crop_type: "center"

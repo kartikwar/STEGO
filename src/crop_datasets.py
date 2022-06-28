@@ -137,11 +137,13 @@ def my_app(cfg: DictConfig) -> None:
     # crop_types = ["five","random"]
     # crop_ratios = [.5, .7]
 
-    dataset_names = ["cityscapes"]
+    dataset_names = ["directory"]
     img_sets = ["train", "val"]
     crop_types = ["five"]
     crop_ratios = [.5]
 
+    cfg.pytorch_data_dir = join(cfg.output_root, cfg.pytorch_data_dir)
+    
     for crop_ratio in crop_ratios:
         for crop_type in crop_types:
             for dataset_name in dataset_names:

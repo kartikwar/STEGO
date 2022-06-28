@@ -1,7 +1,7 @@
 output_root: '../'
 pytorch_data_dir: '/home/ubuntu/kartik/STEGO/datasets'
 experiment_name: "quicktest"
-pretrained_model: True
+pretrained_model: False
 res: 320
 batch_size: 1
 num_workers: 24
@@ -13,7 +13,7 @@ use_ddp: False
 
 
 model_paths:
-  - "/home/ubuntu/kartik/STEGO/saved_models/cocostuff27_vit_base_5.ckpt"
+  - "/home/ubuntu/kartik/datasets/checkpoints/cocostuff27/crop.ckpt"
   # - "/home/ubuntu/kartik/datasets/checkpoints/cocostuff27/epoch=1-step=4992.ckpt"
   #- "../saved_models/cityscapes_vit_base_1.ckpt"
   #- "../saved_models/potsdam_test.ckpt"

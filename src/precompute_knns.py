@@ -42,7 +42,7 @@ def my_app(cfg: DictConfig) -> None:
 
     # Uncomment these lines to run on custom datasets
     dataset_names = ["directory"]
-    crop_types = [None]
+    crop_types = ["five", None]
 
     res = 224
     n_batches = 16
